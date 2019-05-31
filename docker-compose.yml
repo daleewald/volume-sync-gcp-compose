@@ -1,0 +1,42 @@
+version: "3.2"
+
+networks:
+  private-net:
+    driver: bridge
+
+services:
+  watcher:
+    image: dewaldops/volume-sync-watcher-ch:latest
+    depends_on:
+      - "redis"
+      - "worker"
+    environment:
+      - BASE_DIR=/syncdir/
+      - INCLUDE_FILE_PATTERN
+    networks:
+      - private-net
+    volumes:
+      - type: bind
+        source: ${MOUNT_SYNC_DIRECTORY}
+        target: /syncdir
+  worker:
+    image: dewaldops/volume-sync-worker-gcp:latest
+    depends_on:
+      - "redis"
+    environment:
+      - PROJECT_ID=${GCP_PROJECT_ID}
+      - BUCKET_NAME=${GCP_BUCKET_NAME}
+      - BASE_DIR=/syncdir/
+    networks:
+      - private-net
+    volumes:
+      - type: bind
+        source: ${GCP_KEY_FILE_FULL_PATH}
+        target: /keyfile
+      - type: bind
+        source: ${MOUNT_SYNC_DIRECTORY}
+        target: /syncdir
+  redis:
+    image: 'redis:latest'
+    networks:
+      - private-net
