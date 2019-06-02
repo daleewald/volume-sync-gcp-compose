@@ -7,7 +7,7 @@ networks:
 services:
   watcher:
     build: ../volume-sync-watcher-ch/.
-    command: npx nodemon app/index.js
+    command: npx nodemon -L app/index.js
     depends_on:
       - "redis"
       - "worker"
@@ -22,7 +22,7 @@ services:
         target: /syncdir
   worker:
     build: ../volume-sync-worker-gcp/.
-    command: npx nodemon app/worker.js
+    command: npx nodemon -L app/worker.js
     depends_on:
       - "redis"
     environment:
