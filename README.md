@@ -19,7 +19,7 @@ Workstation:
 - `GCP_KEY_FILE_FULL_PATH`: the full path to the .json key file for the service account. This file will be bind-mounted to the watcher container.
 - `MOUNT_SYNC_DIRECTORY`: the root directory on the docker host that will be bind-mounted to the watcher and worker containers.
 - `INCLUDE_FILE_PATTERN`: the pattern relative to the `MOUNT_SYNC_DIRECTORY` that specifies the watching context of the watcher container. i.e. `**/*.txt` or `DesiredSubFolder/*` etc.
-- `EXCLUDE_FILE_PATTERN`: regex pattern to be configured on the watcher to exclude files within the watching context. (TBD) This environment variable is currently not in use (but watcher will ignore .dotfiles and files that end with `~`).
+- `EXCLUDE_FILE_PATTERN`: regex pattern to be configured on the watcher to exclude files within the watching context. (TBD) This environment variable is currently not in use (but watcher will ignore .dotfiles and files that end with `~`). `/(^|[\\/\\])\..|(\w*~(?!\S))/`
 
 ## Run
 `docker-compose up`
