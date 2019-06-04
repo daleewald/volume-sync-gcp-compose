@@ -14,6 +14,7 @@ services:
     environment:
       - BASE_DIR=/syncdir/
       - INCLUDE_FILE_PATTERN
+      - EXCLUDE_FILE_PATTERN
     networks:
       - private-net
     volumes:
