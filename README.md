@@ -21,7 +21,7 @@ Workstation:
   - If Windows host enter paths with forwardslash instead of backslash. `SET GCP_KEY_FILE_FULL_PATH=c:/path/to/key.json`
 - `MOUNT_SYNC_DIRECTORY`: the root directory on the docker host that will be bind-mounted to the watcher and worker containers.
   - If Windows host enter paths with forwardslash instead of backslash. `SET MOUNT_SYNC_DIRECTORY=d:/mount/root`
-- `INCLUDE_FILE_PATTERN`: the pattern relative to the `MOUNT_SYNC_DIRECTORY` that specifies the watching context of the watcher container. i.e. `**/*.txt` or `DesiredSubFolder/*` etc.
+- `INCLUDE_FILE_PATTERN`: the [anymatch](https://github.com/micromatch/anymatch) pattern relative to the `MOUNT_SYNC_DIRECTORY` that specifies the watching context of the watcher container. i.e. `**/*.txt` or `DesiredSubFolder/*` etc.
 - `EXCLUDE_FILE_PATTERN`: regex pattern or [anymatch](https://github.com/micromatch/anymatch) to be configured on the watcher to exclude files within the watching context. 
   - Example regex for MacOS Docker host; to ignore .dotfiles and files that end with `~`: `/(^|[\\/\\])\..|(\w*~(?!\S))/`
   - Simple (anymatch) example; to ignore .txt files `**/*.txt`
