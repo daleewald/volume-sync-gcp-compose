@@ -1,7 +1,7 @@
 # volume-sync-gcp-compose
 
 ## Description
-Places a watch on a mounted directory structure, watching for additions and changes. These events will create jobs in a queue and reference the event information. A worker processes the jobs and performs uploads to, or removals from, GCP Cloud Storage.
+Places a watch on a mounted directory structure, watching for additions and changes with [chokidar](https://github.com/paulmillr/chokidar) . These events will create jobs in a redis-backed [bee-queue](https://github.com/bee-queue/bee-queue) and reference the event information. A worker processes the jobs and performs uploads to, or removals from, GCP Cloud Storage.
 
 ## Requirements
 Google Cloud:
@@ -22,7 +22,10 @@ Workstation:
 - `MOUNT_SYNC_DIRECTORY`: the root directory on the docker host that will be bind-mounted to the watcher and worker containers.
 -- If Windows host enter paths with forwardslash instead of backslash. `SET MOUNT_SYNC_DIRECTORY=d:/mount/root`
 - `INCLUDE_FILE_PATTERN`: the pattern relative to the `MOUNT_SYNC_DIRECTORY` that specifies the watching context of the watcher container. i.e. `**/*.txt` or `DesiredSubFolder/*` etc.
-- `EXCLUDE_FILE_PATTERN`: regex pattern to be configured on the watcher to exclude files within the watching context. Example to ignore .dotfiles and files that end with `~`: `/(^|[\\/\\])\..|(\w*~(?!\S))/`
+- `EXCLUDE_FILE_PATTERN`: regex pattern or [anymatch](https://github.com/micromatch/anymatch) to be configured on the watcher to exclude files within the watching context. 
+-- Example regex for MacOS Docker host; to ignore .dotfiles and files that end with `~`: `/(^|[\\/\\])\..|(\w*~(?!\S))/`
+-- Simple (anymatch) example; to ignore .txt files `**/*.txt`
 
 ## Run
+In the project directory, after setting environment variables:
 `docker-compose pull && docker-compose up`
