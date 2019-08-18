@@ -7,11 +7,13 @@ networks:
 services:
   watcher:
     build: ../volume-sync-watcher-ch/.
-    command: npx nodemon -L app/index.js
     depends_on:
       - "redis"
       - "worker"
     environment:
+      - PROJECT_ID=${GCP_PROJECT_ID}
+      - GCP_BUCKET_NAME=${GCP_BUCKET_NAME}
+      - GOOGLE_APPLICATION_CREDENTIALS=/keyfile
       - BASE_DIR=/syncdir/
       - INCLUDE_FILE_PATTERN
       - EXCLUDE_FILE_PATTERN
@@ -23,10 +25,10 @@ services:
         target: /syncdir
   worker:
     build: ../volume-sync-worker-gcp/.
-    command: npx nodemon -L app/worker.js
     depends_on:
       - "redis"
     environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/keyfile
       - PROJECT_ID=${GCP_PROJECT_ID}
       - BUCKET_NAME=${GCP_BUCKET_NAME}
       - BASE_DIR=/syncdir/
